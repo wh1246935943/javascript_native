@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="container"></div>
+</body>
+
+<script>
+  class CounterPanel {
+
+    constructor(param) {
+
+      this.param = {...{seat: 0, range: 0, length: 9, margin: 10}, ...param};
+
+      this.number = param.startVlue;
+      this.max = parseInt(Array.from({length: this.param.length}, () => 9).join(''))
+
+      this.container = document.querySelector(this.param.selector);
+      this.container.style.display = 'flex';
+      this.container.style.width = '900px';
+      this.container.style.height = '100px';
+
+      this.creatDom()
+
+    };
+
+    creatDom() {
+      const {seat, length, margin} = this.param;
+
+      const cdf = document.createDocumentFragment();
+
+      const itemStyle = {
+        width: `${(this.container.clientWidth - (length - 1) * margin) / length}px`,
+        height: `${this.container.clientHeight}`,
+        marginRight: `${margin}px`,
+        border: '2px dashed red',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      };
+
+      for (let index = 0; index < length; index++) {
+
+        const item = document.createElement('div');
+
+        Object.assign(item.style, {...itemStyle})
+
+        if (index === length -1) {
+          item.style.marginRight = '';
+        };
+
+        item.innerText = seat;
+
+        cdf.appendChild(item);
+        
+      };
+
+      this.container.appendChild(cdf);
+
+      this.updatedDom()
+      
+    };
+
+    computedData() {
+
+      const {range} = this.param;
+
+      if (typeof range === 'number') {
+        this.number += range;
+      } else {
+        this.number += this.randomNum(range[0], range[1]);
+      };
+
+      if (this.number > this.max) {
+        this.number = this.max
+      }
+
+      this.updatedDom();
+    };
+
+
+    updatedDom() {
+      const { length } = this.param;
+
+      const {childNodes} = this.container;
+
+      const valueChars = this.number.toString().split('');
+      
+      const startSetIndex = length - valueChars.length;
+
+      for (let index = 0; index < length; index++) {
+
+        if (index >= startSetIndex) {
+          childNodes[index].childNodes[0].data = valueChars.shift()
+        }
+        
+      };
+
+      if (this.number >= this.max) return;
+
+      setTimeout(() => {
+        this.computedData()
+      }, 1000)
+    };
+
+    randomNum(minNum,maxNum){
+      switch(arguments.length){
+        case 1:
+          return parseInt(Math.random()*minNum+1,10);
+        case 2: 
+          return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+        default:
+          return 0;
+      }
+    }
+
+  }
+
+  new CounterPanel({
+    selector: '#container',
+    seat: 0,
+    length: 9,
+    range: [300, 600],
+    startVlue: 36942
+  })
+</script>
+</html>
