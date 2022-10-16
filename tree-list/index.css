@@ -1,0 +1,45 @@
+*{
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.tree-list{
+  display: inline-block;
+  width: 300px;
+}
+
+.tree-list-row {
+  width: 100%;
+  height: auto;
+}
+
+.tree-list-row-item{
+  width: inherit;
+  height: 38px;
+  line-height: 38px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  cursor: pointer;
+  background-color: rgb(138, 138, 138);
+}
+
+.tree-list-row-item_parent{
+  background-color: rgb(138, 138, 138);
+}
+
+.tree-list-row-item-childrenlist{
+  width: calc(100% - 20px);
+  margin-left: 20px;
+  margin-top: 5px;
+  display: none;
+}
+
+.tree-list-row-item-childrenlist_hide{
+  display: block;
+}
+
+.tree-list-row:not(:first-child){
+  margin-top: 5px;
+}
